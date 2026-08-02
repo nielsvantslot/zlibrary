@@ -80,12 +80,6 @@
       <symbol id="icon-note-small" viewBox="0 0 16 16">
         <path d="M2 4h12M2 8h9M2 12h6" />
       </symbol>
-      <symbol id="icon-vhs" viewBox="0 0 24 24">
-        <rect x="2.5" y="6" width="19" height="12" rx="1.2" />
-        <circle cx="8" cy="15" r="1.6" />
-        <circle cx="16" cy="15" r="1.6" />
-        <path d="M5.5 9h13M7 6V3.5h10V6" />
-      </symbol>
     </defs>
   </svg>
 
@@ -192,6 +186,28 @@
         </button>
       </div>
     </article>
+  </template>
+
+  <template id="vhs-template">
+    <div class="vhs-tape">
+      <button class="vhs-status-btn" type="button">
+        <span class="vhs-shell">
+          <span class="vhs-reels" aria-hidden="true">
+            <span class="vhs-reel"></span>
+            <span class="vhs-reel"></span>
+          </span>
+          <span class="vhs-flap" aria-hidden="true"></span>
+          <span class="vhs-label">
+            <span class="vhs-label-title"></span>
+            <span class="vhs-label-skill"></span>
+            <ul class="vhs-label-lines"></ul>
+          </span>
+        </span>
+      </button>
+      <button class="vhs-note-tab" type="button">
+        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 4h12M2 8h9M2 12h6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+      </button>
+    </div>
   </template>
 
   <div class="popover" id="popover" hidden>

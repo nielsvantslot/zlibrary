@@ -28,6 +28,7 @@ const libraryEl = document.getElementById('library');
 const shelfTemplate = document.getElementById('shelf-template');
 const spineTemplate = document.getElementById('spine-template');
 const indexCardTemplate = document.getElementById('index-card-template');
+const vhsTemplate = document.getElementById('vhs-template');
 const popover = document.getElementById('popover');
 const popoverTitle = document.getElementById('popover-title');
 const popoverStates = document.getElementById('popover-states');
@@ -178,7 +179,7 @@ function coverLines(effect) {
   return shown;
 }
 
-function makeIndexCard(book, fallbackIcon = 'icon-general') {
+function makeIndexCard(book) {
   const node = indexCardTemplate.content.cloneNode(true);
   const card = node.querySelector('.index-card');
   card.dataset.state = book.state;
@@ -189,7 +190,7 @@ function makeIndexCard(book, fallbackIcon = 'icon-general') {
   node.querySelector('.index-card-title').textContent = title;
   node.querySelector('.index-card-skill').textContent = book.skill || 'General';
 
-  const iconId = (book.skill && SKILL_ICONS[book.skill]) || fallbackIcon;
+  const iconId = (book.skill && SKILL_ICONS[book.skill]) || 'icon-general';
   node.querySelector('.index-card-icon-use').setAttribute('href', `#${iconId}`);
 
   const linesEl = node.querySelector('.index-card-lines');
@@ -209,6 +210,40 @@ function makeIndexCard(book, fallbackIcon = 'icon-general') {
   });
 
   card.addEventListener('click', () => cycleStatus(book));
+
+  return node;
+}
+
+function makeVhsTape(book) {
+  const node = vhsTemplate.content.cloneNode(true);
+  const tape = node.querySelector('.vhs-tape');
+  const statusBtn = node.querySelector('.vhs-status-btn');
+  const noteTab = node.querySelector('.vhs-note-tab');
+  tape.dataset.state = book.state;
+  tape.dataset.id = book.id;
+  if (book.note) tape.dataset.hasNote = 'true';
+  tape.style.setProperty('--tape-color', book.skill ? colorVarForSkill(book.skill) : 'var(--walnut-light)');
+
+  const title = book.title.replace(TITLE_PREFIX_RE, '');
+  node.querySelector('.vhs-label-title').textContent = title;
+  node.querySelector('.vhs-label-skill').textContent = book.skill || 'General';
+
+  const linesEl = node.querySelector('.vhs-label-lines');
+  for (const line of coverLines(book.effect)) {
+    const li = document.createElement('li');
+    li.textContent = line;
+    linesEl.appendChild(li);
+  }
+
+  statusBtn.setAttribute('aria-label', `${title}, currently ${book.state}. Activate to change status.`);
+  noteTab.setAttribute('aria-label', `Note for ${title}`);
+  noteTab.title = 'Who has it / where is it?';
+
+  statusBtn.addEventListener('click', () => cycleStatus(book));
+  noteTab.addEventListener('click', (e) => {
+    e.stopPropagation();
+    openPopover(noteTab, book);
+  });
 
   return node;
 }
@@ -255,8 +290,8 @@ function render() {
     libraryEl.appendChild(heading);
 
     const grid = document.createElement('div');
-    grid.className = 'index-card-grid';
-    for (const book of vhsTapes) grid.appendChild(makeIndexCard(book, 'icon-vhs'));
+    grid.className = 'vhs-grid';
+    for (const book of vhsTapes) grid.appendChild(makeVhsTape(book));
     libraryEl.appendChild(grid);
   }
 }
