@@ -1,8 +1,8 @@
 # The Zomboid Athenaeum
 
 A shared library tracker for your Project Zomboid team: track which of the game's
-120 skill books and 87 recipe magazines you've found, and which are safely shelved
-at home base.
+120 skill books, 87 recipe magazines, and 55 skill-granting VHS tapes you've found,
+and which are safely shelved at home base.
 
 ## Running it
 
@@ -72,7 +72,7 @@ To deploy:
 2. In the Vercel project → **Storage** tab, add a Postgres database (the Neon
    integration). This auto-sets a `DATABASE_URL` (or `POSTGRES_URL`) environment
    variable on the project — that's the only setup step; the app reads it automatically.
-3. Deploy. On first request, the app creates its tables and seeds the 207-item
+3. Deploy. On first request, the app creates its tables and seeds the 262-item
    catalog into that Postgres database automatically, the same as the SQLite path does locally.
 
 Note the two backends are separate databases — progress made on your Docker/local
@@ -86,8 +86,8 @@ other. Pick one as your team's real source of truth.
 - Each entry also has a free-text note field, handy for "Steve has it at the
   Rosewood safehouse."
 - Skill books are grouped into shelves by skill (Carpentry, Cooking, Electrical,
-  etc.); recipe magazines get their own section since they aren't tied to a skill
-  progression the same way.
+  etc.); recipe magazines and VHS tapes each get their own section since they
+  aren't tied to a skill progression the same way.
 - Search and filter by category or status from the header controls.
 - Changes sync live: every open tab holds a connection to the server, so when one
   teammate updates a book's status, everyone else's page updates automatically —

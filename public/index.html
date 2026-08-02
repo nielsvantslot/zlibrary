@@ -80,6 +80,12 @@
       <symbol id="icon-note-small" viewBox="0 0 16 16">
         <path d="M2 4h12M2 8h9M2 12h6" />
       </symbol>
+      <symbol id="icon-vhs" viewBox="0 0 24 24">
+        <rect x="2.5" y="6" width="19" height="12" rx="1.2" />
+        <circle cx="8" cy="15" r="1.6" />
+        <circle cx="16" cy="15" r="1.6" />
+        <path d="M5.5 9h13M7 6V3.5h10V6" />
+      </symbol>
     </defs>
   </svg>
 
@@ -108,6 +114,11 @@
           <div class="gauge-track"><div class="gauge-fill" id="fill-recipe_magazine"></div></div>
           <div class="gauge-count" id="count-recipe_magazine">0 / 0 shelved</div>
         </div>
+        <div class="gauge">
+          <div class="gauge-label">VHS Tapes</div>
+          <div class="gauge-track"><div class="gauge-fill" id="fill-vhs_tape"></div></div>
+          <div class="gauge-count" id="count-vhs_tape">0 / 0 shelved</div>
+        </div>
       </div>
 
       <div class="catalog-controls">
@@ -123,6 +134,7 @@
           <button class="tab active" data-category="">All</button>
           <button class="tab" data-category="skill_book">Skill Books</button>
           <button class="tab" data-category="recipe_magazine">Magazines</button>
+          <button class="tab" data-category="vhs_tape">VHS Tapes</button>
         </div>
         <div class="tab-group" id="state-chips">
           <button class="tab active" data-state="">Any status</button>

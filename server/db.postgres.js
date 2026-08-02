@@ -33,11 +33,13 @@ async function init() {
     );
   `);
 
-  const { rows } = await sql.query('SELECT COUNT(*)::int AS count FROM books');
-  if (rows[0].count > 0) return;
-
   const seed = require('./data/books-seed.json');
-  for (const row of seed) {
+  const { rows: existingRows } = await sql.query('SELECT title FROM books');
+  const existingTitles = new Set(existingRows.map((r) => r.title));
+  const missing = seed.filter((row) => !existingTitles.has(row.title));
+  if (!missing.length) return;
+
+  for (const row of missing) {
     const { rows: inserted } = await sql.query(
       `INSERT INTO books (title, category, skill, level, level_label, effect, item_id)
        VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id`,
@@ -45,7 +47,7 @@ async function init() {
     );
     await sql.query(`INSERT INTO status (book_id, state) VALUES ($1, 'missing')`, [inserted[0].id]);
   }
-  console.log(`Seeded ${seed.length} books.`);
+  console.log(`Seeded ${missing.length} new books (catalog update).`);
 }
 
 async function getBooks({ category, skill, state, q } = {}) {

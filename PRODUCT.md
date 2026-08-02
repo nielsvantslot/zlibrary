@@ -12,11 +12,11 @@ A small team of friends playing Project Zomboid together on a shared/multiplayer
 
 ## Product Purpose
 
-"The Zomboid Athenaeum" is a shared tracker for the team's collection of in-game books and magazines. It exists so the team can coordinate looting: see at a glance which skill books/recipe magazines are still missing, which have been found but not brought home yet, and which are already secured at the team's base library. Success is the team never re-looting a location for a book they already have, and always knowing what's still worth grabbing.
+"The Zomboid Athenaeum" is a shared tracker for the team's collection of in-game books, magazines, and VHS tapes. It exists so the team can coordinate looting: see at a glance which skill books/recipe magazines/VHS tapes are still missing, which have been found but not brought home yet, and which are already secured at the team's base library. Success is the team never re-looting a location for an item they already have, and always knowing what's still worth grabbing.
 
 ## Positioning
 
-Unlike a generic checklist or spreadsheet, it's seeded with the real, complete Project Zomboid Build 42 catalog (120 skill books across 24 skills, 87 recipe magazines) with accurate titles and unlock effects, and is framed as an actual library/card-catalog rather than a task tracker — status is "shelved," not "done."
+Unlike a generic checklist or spreadsheet, it's seeded with the real, complete Project Zomboid Build 42 catalog (120 skill books across 24 skills, 87 recipe magazines, 55 skill-granting VHS tapes) with accurate titles and unlock effects, and is framed as an actual library/card-catalog rather than a task tracker — status is "shelved," not "done."
 
 ## Operating Context
 
@@ -26,7 +26,7 @@ Unlike a generic checklist or spreadsheet, it's seeded with the real, complete P
 
 ## Capabilities and Constraints
 
-- Fixed catalog of 207 real items seeded from game data: skill books (24 skills × 5 volumes each, with level/tier and XP-multiplier effect) and recipe magazines (title, gating skill if any, list of unlocked recipes).
+- Fixed catalog of 262 real items seeded from game data: skill books (24 skills × 5 volumes each, with level/tier and XP-multiplier effect), recipe magazines (title, gating skill if any, list of unlocked recipes), and VHS tapes (title, skill(s) taught, flat XP amount(s) — no volumes/tiers, since tapes aren't sequenced the way book volumes are).
 - Each item has one of three states — Missing / Found (picked up, not home yet) / Shelved (secured at base) — plus a free-text note (e.g. who has it or where it is).
 - Search across title/skill/effect, and filter by category/skill/state.
 - No accounts; edits are last-write-wins, shared instantly across the team.
@@ -41,7 +41,7 @@ Name: "The Zomboid Athenaeum" — confirmed. Leans into the library/archive fram
 
 ## Evidence on Hand
 
-Real Project Zomboid Build 42 book/magazine catalog (title, skill, level, effect) sourced from pzwiki.net, stored at `server/data/books-seed.json`. No other brand assets, testimonials, or marketing copy exist — this is an internal tool for a private friend group, not a public product.
+Real Project Zomboid Build 42 book/magazine/VHS catalog (title, skill, level, effect) sourced from pzwiki.net, stored at `server/data/books-seed.json`. No other brand assets, testimonials, or marketing copy exist — this is an internal tool for a private friend group, not a public product.
 
 ## Product Principles
 

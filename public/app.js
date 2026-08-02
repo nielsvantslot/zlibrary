@@ -81,7 +81,7 @@ function renderStats(data) {
     if (row.state === 'shelved') shelvedByCategory[row.category] = row.count;
   }
 
-  for (const cat of ['skill_book', 'recipe_magazine']) {
+  for (const cat of ['skill_book', 'recipe_magazine', 'vhs_tape']) {
     const total = totalsByCategory[cat] || 0;
     const shelved = shelvedByCategory[cat] || 0;
     const fraction = total ? shelved / total : 0;
@@ -97,6 +97,7 @@ function levelSort(a, b) {
 function groupBooks(books) {
   const skillBooks = books.filter((b) => b.category === 'skill_book');
   const magazines = books.filter((b) => b.category === 'recipe_magazine');
+  const vhsTapes = books.filter((b) => b.category === 'vhs_tape');
 
   const bySkill = new Map();
   for (const b of skillBooks) {
@@ -108,8 +109,9 @@ function groupBooks(books) {
 
   const skillSections = [...bySkill.entries()].sort((a, b) => a[0].localeCompare(b[0]));
   magazines.sort((a, b) => a.title.localeCompare(b.title));
+  vhsTapes.sort((a, b) => a.title.localeCompare(b.title));
 
-  return { skillSections, magazines };
+  return { skillSections, magazines, vhsTapes };
 }
 
 function makeShelf(skill, books) {
@@ -163,25 +165,31 @@ function shortSpineTitle(title) {
   return quoted ? quoted[1] : title;
 }
 
+const TITLE_PREFIX_RE = /^(Magazine|VHS):\s*/;
+
 function coverLines(effect) {
-  const items = (effect || '').replace(/^Unlocks:\s*/, '').split(';').map((s) => s.trim()).filter(Boolean);
+  const text = effect || '';
+  const items = text.startsWith('Unlocks:')
+    ? text.replace(/^Unlocks:\s*/, '').split(';').map((s) => s.trim()).filter(Boolean)
+    : text.split(',').map((s) => s.trim()).filter(Boolean);
   const shown = items.slice(0, 3);
   const extra = items.length - shown.length;
   if (extra > 0) shown.push(`+${extra} more`);
   return shown;
 }
 
-function makeIndexCard(book) {
+function makeIndexCard(book, fallbackIcon = 'icon-general') {
   const node = indexCardTemplate.content.cloneNode(true);
   const card = node.querySelector('.index-card');
   card.dataset.state = book.state;
   card.dataset.id = book.id;
   card.style.setProperty('--card-color', book.skill ? colorVarForSkill(book.skill) : 'var(--walnut-light)');
 
-  node.querySelector('.index-card-title').textContent = book.title.replace(/^Magazine:\s*/, '');
+  const title = book.title.replace(TITLE_PREFIX_RE, '');
+  node.querySelector('.index-card-title').textContent = title;
   node.querySelector('.index-card-skill').textContent = book.skill || 'General';
 
-  const iconId = (book.skill && SKILL_ICONS[book.skill]) || 'icon-general';
+  const iconId = (book.skill && SKILL_ICONS[book.skill]) || fallbackIcon;
   node.querySelector('.index-card-icon-use').setAttribute('href', `#${iconId}`);
 
   const linesEl = node.querySelector('.index-card-lines');
@@ -193,7 +201,7 @@ function makeIndexCard(book) {
 
   const noteBtn = node.querySelector('.card-note-toggle');
   if (book.note) noteBtn.dataset.hasNote = 'true';
-  noteBtn.setAttribute('aria-label', `Note for ${book.title.replace(/^Magazine:\s*/, '')}`);
+  noteBtn.setAttribute('aria-label', `Note for ${title}`);
   noteBtn.title = 'Who has it / where is it?';
   noteBtn.addEventListener('click', (e) => {
     e.stopPropagation();
@@ -220,7 +228,7 @@ function render() {
     return;
   }
 
-  const { skillSections, magazines } = groupBooks(state.books);
+  const { skillSections, magazines, vhsTapes } = groupBooks(state.books);
 
   if (!state.category || state.category === 'skill_book') {
     for (const [skill, books] of skillSections) {
@@ -237,6 +245,18 @@ function render() {
     const grid = document.createElement('div');
     grid.className = 'index-card-grid';
     for (const book of magazines) grid.appendChild(makeIndexCard(book));
+    libraryEl.appendChild(grid);
+  }
+
+  if ((!state.category || state.category === 'vhs_tape') && vhsTapes.length) {
+    const heading = document.createElement('h2');
+    heading.className = 'section-heading';
+    heading.textContent = 'VHS Tapes — Home Video Archive';
+    libraryEl.appendChild(heading);
+
+    const grid = document.createElement('div');
+    grid.className = 'index-card-grid';
+    for (const book of vhsTapes) grid.appendChild(makeIndexCard(book, 'icon-vhs'));
     libraryEl.appendChild(grid);
   }
 }

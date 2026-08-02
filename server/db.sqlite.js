@@ -29,10 +29,10 @@ db.exec(`
 `);
 
 function seedIfEmpty() {
-  const { count } = db.prepare('SELECT COUNT(*) AS count FROM books').get();
-  if (count > 0) return;
-
   const seed = require('./data/books-seed.json');
+  const existingTitles = new Set(db.prepare('SELECT title FROM books').all().map((r) => r.title));
+  const missing = seed.filter((row) => !existingTitles.has(row.title));
+  if (!missing.length) return;
 
   const insertBook = db.prepare(`
     INSERT INTO books (title, category, skill, level, level_label, effect, item_id)
@@ -57,8 +57,8 @@ function seedIfEmpty() {
     }
   });
 
-  insertAll(seed);
-  console.log(`Seeded ${seed.length} books.`);
+  insertAll(missing);
+  console.log(`Seeded ${missing.length} new books (catalog update).`);
 }
 
 seedIfEmpty();
