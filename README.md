@@ -58,6 +58,27 @@ If you want it reachable outside your LAN (e.g. hosting on a small VPS or via a
 tunnel like Tailscale/ngrok), that's on you to set up — this app itself has no
 deployment requirements beyond Node.js.
 
+### Deploying to Vercel instead
+
+Docker/`npm start` run a normal always-on Node server with a local SQLite file.
+Vercel is serverless — no persistent process, no writable local disk — so this
+app auto-switches to a hosted Postgres database and polling instead of live-sync
+when it detects it's running there (`server/db.js` picks the backend; `server/index.js`
+disables the file-watcher and Server-Sent Events endpoint via `process.env.VERCEL`).
+
+To deploy:
+
+1. Push this repo to GitHub (already done) and import it into a new Vercel project.
+2. In the Vercel project → **Storage** tab, add a Postgres database (the Neon
+   integration). This auto-sets a `DATABASE_URL` (or `POSTGRES_URL`) environment
+   variable on the project — that's the only setup step; the app reads it automatically.
+3. Deploy. On first request, the app creates its tables and seeds the 207-item
+   catalog into that Postgres database automatically, the same as the SQLite path does locally.
+
+Note the two backends are separate databases — progress made on your Docker/local
+deployment and progress made on the Vercel deployment do **not** sync with each
+other. Pick one as your team's real source of truth.
+
 ## How it works
 
 - Every book/magazine has one of three states: **Missing**, **Found** (someone

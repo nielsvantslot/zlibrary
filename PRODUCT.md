@@ -30,9 +30,10 @@ Unlike a generic checklist or spreadsheet, it's seeded with the real, complete P
 - Each item has one of three states — Missing / Found (picked up, not home yet) / Shelved (secured at base) — plus a free-text note (e.g. who has it or where it is).
 - Search across title/skill/effect, and filter by category/skill/state.
 - No accounts; edits are last-write-wins, shared instantly across the team.
-- Live sync: every open browser tab holds a Server-Sent Events connection (`GET /api/events`); any status/note change broadcasts to all connected tabs, so teammates see each other's edits without refreshing.
-- Plain HTML/CSS/JS frontend (no framework, no build step) served by a Node/Express backend with SQLite storage; must keep working with this stack.
+- Live sync on persistent deployments (Docker/`npm start`): every open browser tab holds a Server-Sent Events connection (`GET /api/events`); any status/note change broadcasts to all connected tabs, so teammates see each other's edits without refreshing. On serverless (Vercel) this isn't possible, so the client polls `/api/books` and `/api/stats` instead (`GET /api/config` tells the client which mode is active).
+- Plain HTML/CSS/JS frontend (no framework, no build step) served by a Node/Express backend. Two interchangeable storage backends behind `server/db.js`: SQLite (`better-sqlite3`, a local file) for Docker/`npm start`, and Postgres (Neon serverless driver) for Vercel — picked automatically based on whether `DATABASE_URL`/`POSTGRES_URL` is set. These are two separate databases; progress doesn't sync between a Docker deployment and a Vercel deployment.
 - Runs in Docker via `docker compose up -d --build`; `public/` and `server/` are bind-mounted from the host so frontend edits apply immediately and backend edits need only `docker compose restart` (no rebuild) unless `package.json` dependencies changed.
+- Also deployable to Vercel as a serverless function (`api/index.js` wraps the Express app; `vercel.json` routes everything to it). Requires a Postgres database attached via Vercel's Storage tab (Neon integration) to provide `DATABASE_URL`.
 
 ## Brand Commitments
 

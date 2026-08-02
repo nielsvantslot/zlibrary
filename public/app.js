@@ -375,4 +375,24 @@ function connectLiveUpdates() {
   source.addEventListener('reload', () => window.location.reload());
   source.onerror = () => { source.close(); setTimeout(connectLiveUpdates, 2000); };
 }
-connectLiveUpdates();
+
+const POLL_INTERVAL_MS = 8000;
+function pollForUpdates() {
+  setInterval(() => {
+    fetchBooks();
+    fetchStats();
+  }, POLL_INTERVAL_MS);
+}
+
+async function initLiveUpdates() {
+  let live = false;
+  try {
+    const res = await fetch('/api/config');
+    live = !!(await res.json()).live;
+  } catch {
+    // No /api/config (or it failed) — assume no persistent connection support and poll instead.
+  }
+  if (live) connectLiveUpdates();
+  else pollForUpdates();
+}
+initLiveUpdates();
