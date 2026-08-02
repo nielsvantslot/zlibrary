@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The Zomboid Athenaeum</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<!--
+  THESIS: the library is a real reading-room shelf wall to scan, not a dashboard of cards.
+  OWN-WORLD: charcoal-walnut ground; cloth-bound spines in jewel tones per skill (forest,
+  oxblood, navy, mustard, teal, plum, rust, olive, indigo, slate); brass call-number tags;
+  foil-stamped Spectral display type; IBM Plex Sans chrome; IBM Plex Mono call numbers;
+  ink-stamp status badges, never colored borders.
+  STORY: the team scans skill shelves, sees gaps for missing books, pulled-forward spines
+  for found, flush spines for shelved; clicks a spine to cycle status, taps its tag for a note.
+  FIRST VIEWPORT: brass masthead plaques, catalog search slip, then the first shelf's real
+  spines immediately below — no card grid.
+  FORM: Reading Room Stacks, round 3 of 3, key ee12a05c.
+  FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review,
+  the verdict, and DESIGN.md.
+-->
+  <svg style="display:none" aria-hidden="true">
+    <defs>
+      <symbol id="icon-welding" viewBox="0 0 24 24">
+        <path d="M5 19L17 7" />
+        <path d="M15 3l2 2M18 4l2 2M16.5 5.5l2 2" />
+        <path d="M4 20l-1 1M6 18l-1 1" />
+      </symbol>
+      <symbol id="icon-agriculture" viewBox="0 0 24 24">
+        <path d="M12 21V10" />
+        <path d="M12 12c0-4-3-6-6-6 0 4 2 6 6 6Z" />
+        <path d="M12 10c0-4 3-6 6-6 0 4-2 6-6 6Z" />
+        <path d="M7 21h10" />
+      </symbol>
+      <symbol id="icon-fishing" viewBox="0 0 24 24">
+        <path d="M3 12c4-5 10-6 14-3 2 1.5 3 2.5 4 3-1 .5-2 1.5-4 3-4 3-10 2-14-3Z" />
+        <path d="M3 12L1 9M3 12L1 15" />
+        <circle cx="14" cy="11" r="0.6" fill="currentColor" stroke="none" />
+      </symbol>
+      <symbol id="icon-glassmaking" viewBox="0 0 24 24">
+        <path d="M10 3h4" />
+        <path d="M10.5 3v5l-4.5 9a2 2 0 001.8 3h8.4a2 2 0 001.8-3l-4.5-9V3" />
+        <path d="M7.5 15h9" />
+      </symbol>
+      <symbol id="icon-cooking" viewBox="0 0 24 24">
+        <path d="M4 11h16v2a6 6 0 01-6 6h-4a6 6 0 01-6-6v-2Z" />
+        <path d="M2 11h20" />
+        <path d="M4 11a2.5 2.5 0 010-5" />
+        <path d="M20 11a2.5 2.5 0 000-5" />
+        <path d="M9 4c0 1-1 1-1 2M13 4c0 1-1 1-1 2" />
+      </symbol>
+      <symbol id="icon-trapping" viewBox="0 0 24 24">
+        <ellipse cx="12" cy="16" rx="6" ry="3.2" />
+        <ellipse cx="8" cy="9" rx="1.4" ry="1.8" />
+        <ellipse cx="12" cy="7.5" rx="1.4" ry="1.8" />
+        <ellipse cx="16" cy="9" rx="1.4" ry="1.8" />
+      </symbol>
+      <symbol id="icon-electrical" viewBox="0 0 24 24">
+        <path d="M13 2L5 14h6l-2 8 10-14h-6l2-6Z" stroke-linejoin="round" />
+      </symbol>
+      <symbol id="icon-mechanics" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="4" />
+        <path d="M12 3v3M12 18v3M21 12h-3M6 12H3M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1M18.4 18.4l-2.1-2.1M7.7 7.7L5.6 5.6" />
+      </symbol>
+      <symbol id="icon-foraging" viewBox="0 0 24 24">
+        <path d="M12 3c5 1 8 5 8 10-5 1-9-1-10-5-1 3-1 6 1 9" />
+        <path d="M12 3c-2 5-2 9 1 12" />
+      </symbol>
+      <symbol id="icon-tailoring" viewBox="0 0 24 24">
+        <path d="M4 20L19 5" />
+        <circle cx="19" cy="5" r="1.6" />
+        <path d="M4 20c-1-3 1-5 3-4s1 4-1 4" />
+      </symbol>
+      <symbol id="icon-general" viewBox="0 0 24 24">
+        <path d="M4 5c3-1.5 6-1.5 8 0v14c-2-1.5-5-1.5-8 0V5Z" />
+        <path d="M20 5c-3-1.5-6-1.5-8 0v14c2-1.5 5-1.5 8 0V5Z" />
+      </symbol>
+      <symbol id="icon-note-small" viewBox="0 0 16 16">
+        <path d="M2 4h12M2 8h9M2 12h6" />
+      </symbol>
+    </defs>
+  </svg>
+
+  <header class="masthead">
+    <div class="masthead-inner">
+      <div class="masthead-plate">
+        <svg class="masthead-icon" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+          <path d="M6 10c6-3 12-3 18 0v28c-6-3-12-3-18 0V10Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+          <path d="M42 10c-6-3-12-3-18 0v28c6-3 12-3 18 0V10Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+          <path d="M24 10v28" stroke="currentColor" stroke-width="1.6"/>
+        </svg>
+        <div class="masthead-text">
+          <h1>The Zomboid Athenaeum</h1>
+          <p class="masthead-sub">Reading Room &amp; Team Archive</p>
+        </div>
+      </div>
+
+      <div class="gauge-row" id="stats-row">
+        <div class="gauge">
+          <div class="gauge-label">Skill Books</div>
+          <div class="gauge-track"><div class="gauge-fill" id="fill-skill_book"></div></div>
+          <div class="gauge-count" id="count-skill_book">0 / 0 shelved</div>
+        </div>
+        <div class="gauge">
+          <div class="gauge-label">Recipe Magazines</div>
+          <div class="gauge-track"><div class="gauge-fill" id="fill-recipe_magazine"></div></div>
+          <div class="gauge-count" id="count-recipe_magazine">0 / 0 shelved</div>
+        </div>
+      </div>
+
+      <div class="catalog-controls">
+        <label class="catalog-search">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.7"/>
+            <path d="M20 20l-4.3-4.3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+          </svg>
+          <input type="search" id="search" placeholder="Search the catalog&hellip;" />
+        </label>
+
+        <div class="tab-group" id="category-chips">
+          <button class="tab active" data-category="">All</button>
+          <button class="tab" data-category="skill_book">Skill Books</button>
+          <button class="tab" data-category="recipe_magazine">Magazines</button>
+        </div>
+        <div class="tab-group" id="state-chips">
+          <button class="tab active" data-state="">Any status</button>
+          <button class="tab" data-state="missing">Missing</button>
+          <button class="tab" data-state="found">Found</button>
+          <button class="tab" data-state="shelved">Shelved</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main id="library"></main>
+
+  <template id="shelf-template">
+    <section class="shelf">
+      <div class="shelf-tag">
+        <span class="shelf-callno"></span>
+        <span class="shelf-name"></span>
+        <span class="shelf-progress"></span>
+      </div>
+      <div class="shelf-board">
+        <div class="spine-row"></div>
+      </div>
+    </section>
+  </template>
+
+  <template id="spine-template">
+    <div class="spine">
+      <button class="spine-status-btn" type="button">
+        <span class="spine-title"></span>
+        <span class="spine-tier"></span>
+      </button>
+      <button class="spine-note-tab" type="button">
+        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 4h12M2 8h9M2 12h6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </template>
+
+  <template id="index-card-template">
+    <article class="index-card" data-state="missing">
+      <div class="index-card-masthead">
+        <span class="index-card-title"></span>
+        <span class="ink-stamp" aria-hidden="true"></span>
+      </div>
+      <div class="index-card-cover">
+        <svg class="index-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <use class="index-card-icon-use"></use>
+        </svg>
+      </div>
+      <div class="index-card-body">
+        <p class="index-card-skill"></p>
+        <ul class="index-card-lines"></ul>
+        <button class="card-note-toggle" type="button" aria-label="Note">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true"><use href="#icon-note-small"></use></svg>
+        </button>
+      </div>
+    </article>
+  </template>
+
+  <div class="popover" id="popover" hidden>
+    <div class="popover-head">
+      <span class="popover-title" id="popover-title"></span>
+      <button class="popover-close" id="popover-close" type="button" aria-label="Close">
+        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 3l10 10M13 3L3 13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="popover-states" id="popover-states">
+      <button data-state="missing" class="popover-state-btn">Missing</button>
+      <button data-state="found" class="popover-state-btn">Found</button>
+      <button data-state="shelved" class="popover-state-btn">Shelved</button>
+    </div>
+    <label class="popover-note-label" for="popover-note">Who has it / where is it?</label>
+    <input type="text" id="popover-note" class="popover-note" />
+  </div>
+
+  <div class="toast" id="toast" role="status" hidden></div>
+
+  <script src="app.js"></script>
+</body>
+</html>

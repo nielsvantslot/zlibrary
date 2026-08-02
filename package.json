@@ -1,0 +1,14 @@
+{
+  "name": "pz-book-library",
+  "version": "1.0.0",
+  "description": "Shared library tracker for Project Zomboid skill books and recipe magazines",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.9.1",
+    "chokidar": "^3.6.0",
+    "express": "^4.21.2"
+  }
+}

@@ -1,0 +1,10 @@
+services:
+  athenaeum:
+    build: .
+    ports:
+      - "3100:3000"
+    volumes:
+      - ./data:/app/data
+      - ./public:/app/public
+      - ./server:/app/server
+    restart: unless-stopped
